@@ -6,7 +6,6 @@ var (
     baseURL string = "https://api.telegram.org"
     previousUpdate Update 
     wg sync.WaitGroup
-    previousID int = 0
 )
 
 type Bot struct {
@@ -15,6 +14,10 @@ type Bot struct {
 
 type Updates struct {
     Update []Update `json:"result"`
+}
+
+type Previous struct {
+    Previous int `json:"previous"`
 }
 
 type Update struct {

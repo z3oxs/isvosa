@@ -8,6 +8,8 @@ import (
     "io"
     "log"
     "strings"
+    "os"
+    "io/ioutil"
 )
 
 func (b *Bot) GetMe() Me {
@@ -61,10 +63,22 @@ func (b *Bot) GetUpdates() (Update, bool) {
 
     update = updates.Update[len(updates.Update) - 1]
 
-    if previousID != update.ID && string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
+    var previous Previous
+    file, err := os.Open("config.json")
+    if err != nil {
+        log.Fatal("Failed to open config.json")
+
+    }
+    
+    bytes, _ = io.ReadAll(file)
+    json.Unmarshal(bytes, &previous)
+
+    if previous.Previous != update.ID && string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
         update.Command = strings.Split(update.Message.Text, " ")[0][1:]
         update.Args = strings.Split(update.Message.Text, " ")[1:]
-        previousID = update.ID
+        previous.Previous = update.ID
+        jsonFile, _ := json.Marshal(previous)
+        ioutil.WriteFile("config.json", jsonFile, 0644)
 
         return update, true
     }
