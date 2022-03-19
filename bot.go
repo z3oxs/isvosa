@@ -1,3 +1,4 @@
+// A performatic Telegram API to build bots
 package isvosa
 
 import (
@@ -61,7 +62,6 @@ func (b *Bot) GetUpdates() (Update, bool) {
     update = updates.Update[len(updates.Update) - 1]
 
     if previousID != update.ID {
-        fmt.Println()
         if string(update.Message.Text) != "" && string(update.Message.Text[0]) != "/" {
             update.Command = strings.Split(update.Message.Text, " ")[0][1:]
             update.Args = strings.Split(update.Message.Text, " ")[1:]

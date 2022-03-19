@@ -40,20 +40,20 @@ type Update struct {
 type Message struct {
     ID int `json:"message_id"`
     From User `json:"from,omitempty"`
-    SenderChat Chat `json:"sender_chat,omitempty"`
+    SenderChat *Chat `json:"sender_chat,omitempty"`
     Date int `json:"date"`
-    Chat Chat `json:"chat"`
+    Chat *Chat `json:"chat"`
     ForwardFrom User `json:"forward_from,omitempty"`
-    ForwardFromChat Chat `json:"forward_from_chat,omitempty"`
+    ForwardFromChat *Chat `json:"forward_from_chat,omitempty"`
     ForwardFromMessageID int `json:"forward_from_message_id,omitempty"`
     ForwardSignature string `json:"forward_signature,omitempty"`
     ForwardSenderName string `json:"forward_sender_name,omitempty"`
     ForwardDate int `json:"forward_date,omitempty"`
     IsAutomaticForward bool `json:"is_automatic_forward,omitempty"`
-    ReplyToMessage Message `json:"reply_to_message,omitempty"`
+    ReplyToMessage *Message `json:"reply_to_message,omitempty"`
     ViaBot User `json:"via_bot,omitempty"`
     EditDate int `json:"edit_date,omitempty"`
-    HasProtectedContent bool `json:"has_protected_content"`
+    HasProtectedContent bool `json:"has_protected_content,omitempty"`
     MediaGroupID string `json:"media_group_id,omitempty"`
     AuthorSignature string `json:"author_signature,omitempty"`
     Text string `json:"text,omitempty"`
@@ -85,12 +85,12 @@ type Message struct {
     MessageAutoDeleteTimerChanged []MessageAutoDeleteTimerChanged `json:"message_auto_delete_timer_changed,omitempty"`
     MigrateToChatID int `json:"migrate_to_chat_id,omitempty"`
     MigrateFromChatID int `json:"migrate_from_chat_id,omitempty"`
-    PinnedMessage Message `json:"pinned_message"`
+    PinnedMessage *Message `json:"pinned_message,omitempty"`
     Invoice Invoice `json:"invoice,omitempty"`
     SuccessfulPayment SuccessfulPayment `json:"successful_payment,omitempty"`
     ConnectedWebsite string `json:"connected_website,omitempty"`
     PassportData PassportDate `json:"password_data,omitempty"`
-    ProximityAlertTriggered ProximityAlertTriggered `json:"proximity_alert_triggered"`
+    ProximityAlertTriggered ProximityAlertTriggered `json:"proximity_alert_triggered,omitempty"`
     VoiceChatScheduled VoiceChatScheduled `json:"voice_chat_scheduled,omitempty"`
     VoiceChatStarted VoiceChatStarted `json:"voice_chat_started,omitempty"`
     VoiceChatEnded VoiceChatEnded `json:"voice_chat_ended,omitempty"`

@@ -25,22 +25,22 @@ func request(anyStruct interface{}, endpoint, token string) {
     }
 }
 
-func (b *Bot) SendMessage(message MessageStruct) {
+func (b *Bot) SendMessage(message Msg) {
     request(message, "sendMessage", b.Token)
 }
 
-func (b *Bot) SendPhoto(photo PhotoStruct) {
+func (b *Bot) SendPhoto(photo Photo) {
     request(photo, "sendPhoto", b.Token)
 }
 
-func (b *Bot) SendAudio(audio AudioStruct) {
+func (b *Bot) SendAudio(audio Audio) {
     request(audio, "sendAudio", b.Token)
 }
 
-func (b *Bot) SendDocument(document DocumentStruct) {
+func (b *Bot) SendDocument(document Document) {
     request(document, "sendDocument", b.Token)
 }
 
-func (b *Bot) SendVideo(video VideoStruct) {
+func (b *Bot) SendVideo(video Video) {
     request(video, "sendVideo", b.Token)
 }
