@@ -1,0 +1,3 @@
+Enviar arquivos diretamente para o bot InputFile |
+Reply_Markup structs |                                        interface{}
+ChatMember structs |
