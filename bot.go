@@ -61,15 +61,11 @@ func (b *Bot) GetUpdates() (Update, bool) {
 
     update = updates.Update[len(updates.Update) - 1]
 
-    if previousID != update.ID {
-        if string(update.Message.Text) != "" && string(update.Message.Text[0]) != "/" {
-            update.Command = strings.Split(update.Message.Text, " ")[0][1:]
-            update.Args = strings.Split(update.Message.Text, " ")[1:]
-            
-            return update, false
-        }
-        
+    if previousID != update.ID && string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
+        update.Command = strings.Split(update.Message.Text, " ")[0][1:]
+        update.Args = strings.Split(update.Message.Text, " ")[1:]
         previousID = update.ID
+
         return update, true
     }
     
