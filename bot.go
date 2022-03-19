@@ -64,7 +64,7 @@ func (b *Bot) GetUpdates() (Update, bool) {
     update = updates.Update[len(updates.Update) - 1]
 
     var previous Previous
-    file, err := os.Open("config.json")
+    file, err := os.Create("config.json")
     if err != nil {
         log.Fatal("Failed to open config.json")
 
