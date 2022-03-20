@@ -1,6 +1,12 @@
 <div align="center">
     <img width="500" src="isvosa.png" />
     <h3>A performatic library to develop Telegram bots.</h3>
+    <a href="https://pkg.go.dev/github.com/z3oxs/isvosa">
+        <img src="https://pkg.go.dev/badge/github.com/z3oxs/isvosa.svg" />
+    </a>
+    <a href="https://www.codefactor.io/repository/github/z3oxs/isvosa">
+        <img src="https://www.codefactor.io/repository/github/z3oxs/isvosa/badge" alt="CodeFactor" />
+    </a>
 </div>
 
 <br><br>
@@ -8,6 +14,12 @@
 ```go
 go get -u github.com/z3oxs/isvosa
 ```
+
+<br><br>
+## ♻️ Changelog v0.1.3
+- Fixed new updates handler
+- Simplified all commands to a unique function 'Send', needing only pass a valid struct
+- Some lil fixes and improvements
 
 <br><br>
 ## 📃 Documentation
@@ -98,6 +110,7 @@ bot.Send(isvosa.SendPhoto {
     ChatID: update.Message.Chat.ID,
     Photo: "A URL or a InputMedia (https://core.telegram.org/bots/api#inputmedia)",
 })
+
 // To send a inline keyboard, more: https://core.telegram.org/bots/api#inlinekeyboardmarkup
 bot.Send(isvosa.SendMessage {
     ChatID: update.Message.Chat.ID,
@@ -181,5 +194,3 @@ bot.Send(isvosa.DeleteMessage {
     MessageID: update.Message.ID,
 })
 ```
-
-**New features and information coming soon.**

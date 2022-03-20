@@ -13,7 +13,7 @@ type Updates struct {
 }
 
 type Previous struct {
-    Previous int `json:"previous"`
+    ID int `json:"id"`
 }
 
 type Update struct {

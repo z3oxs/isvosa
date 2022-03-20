@@ -59,14 +59,14 @@ func (b *Bot) GetUpdates() (Update, bool) {
     bytes, _ = io.ReadAll(file)
     json.Unmarshal(bytes, &previous)
 
-    if previous.Previous != update.ID {
-        previous.Previous = update.ID
+    if previous.ID != update.ID {
+        previous.ID = update.ID
         
         if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
             update.Command = strings.Split(update.Message.Text, " ")[0][1:]
             update.Args = strings.Split(update.Message.Text, " ")[1:]
-            newFile, _ := json.Marshal(previous)
-            ioutil.WriteFile("config.json", newFile, 0644)
+            bytes, _ := json.Marshal(previous)
+            ioutil.WriteFile("config.json", bytes, 0644)
 
             return update, true
         }
