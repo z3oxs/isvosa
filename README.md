@@ -46,13 +46,18 @@ func main() {
             switch update.Command {
                 // Will send a simple message
                 case "ping":
-                    bot.SendMessage(update.Message.Chat.ID, "Pong!")
+                    bot.Send(isvosa.SendMessage {
+                        ChatID: update.Message.Chat.ID,
+                        Text: "test",
+                    })
 
                 // Sending a message replying will first element of the arguments, that is parsed automatically
                 // for all valid commands
                 case "echo":
-                    bot.SendMessage(update.Message.Chat.ID, update.Args[0])
-            }
+                    bot.Send(isvosa.SendMessage {
+                        ChatID: update.Message.Chat.ID,
+                        Text: update.Args[0],
+                    })
         }
     }
 }
@@ -82,11 +87,8 @@ func me(bot isvosa.Bot) {
 ### Sending messages and other medias
 Basic about sending message and media with your bot
 ```go
-// Will fast send a simple message with the bot
-bot.SendMessage(update.Message.Chat.ID, "Test")
-
 // To send complete messages, with complementar methods, more: https://core.telegram.org/bots/api#sendmessage
-bot.Send(isvosa.SendMsg {
+bot.Send(isvosa.SendMessage {
     ChatID: update.Message.Chat.ID,
     Text: "Text",
 })
@@ -99,7 +101,7 @@ bot.Send(isvosa.SendPhoto {
 ```
 
 #### All available formats:
-- isvosa.SendMsg -> https://core.telegram.org/bots/api#sendmessage
+- isvosa.SendMessage -> https://core.telegram.org/bots/api#sendmessage
 - isvosa.SendPhoto -> https://core.telegram.org/bots/api#sendphoto
 - isvosa.SendAudio -> https://core.telegram.org/bots/api#sendaudio
 - isvosa.SendDocument -> https://core.telegram.org/bots/api#senddocument
@@ -121,14 +123,15 @@ bot.Send(isvosa.SendPhoto {
 ### Editting
 Editing existing messages information
 ```go
-// Will change previous message (based on your input) text
-bot.EditMessage(update.Message.Chat.ID, update.Message.ID - 1, "New text")
-
-// Will change the content of next message (based on your input, too)
-bot.EditMessage(update.Message.Chat.ID, update.Message.ID + 1, "New text")
+// Will change the content of next message (based on your input)
+bot.Send(isvosa.EditMessageText {
+    ChatID: update.Message.Chat.ID,
+    MessageID: update.Message.ID,
+    Text: "New text",
+})
 
 // To change any media
-bot.Edit(isvosa.EditMessageMedia {
+bot.Send(isvosa.EditMessageMedia {
     ChatID: update.Message.Chat.ID,
     MessageID: update.Message.ID,
     Media: "A URL or InputMedia(https://core.telegram.org/bots/api#inputmedia)",
@@ -148,10 +151,16 @@ bot.Edit(isvosa.EditMessageMedia {
 Some other actions you can do with your bot
 ```go
 // Will stop any poll
-bot.StopPoll(update.Message.Chat.ID, update.Message.ID)
+bot.Send(isvosa.StopPoll {
+    ChatID: update.Message.Chat.ID,
+    MessageID: update.Message.ID,
+})
 
 // Will delete a message
-bot.Delete(update.Message.Chat.ID, update.Message.ID)
+bot.Send(isvosa.DeleteMessage {
+    ChatID: update.Message.Chat.ID,
+    MessageID: update.Message.ID,
+})
 ```
 
 **New features and information coming soon.**

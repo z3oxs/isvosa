@@ -577,7 +577,7 @@ type Me struct {
     } `json:"result"`
 }
 
-type SendMsg struct {
+type SendMessage struct {
     ChatID int `json:"chat_id"`
     Text string `json:"text"`
     ParseMode string `json:"parse_mode,omitempty"`
@@ -685,7 +685,7 @@ type SendVoice struct {
     ReplyMarkup interface{} `json:"reply_markup,omitempty"`
 }
 
-type SendVoiceNote struct {
+type SendVideoNote struct {
     ChatID int `json:"chat_id"`
     VideoNote interface{} `json:"video,omitempty"`
     Duration int `json:"duration,omitempty"`

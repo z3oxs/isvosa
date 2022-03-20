@@ -22,17 +22,10 @@ func (b *Bot) GetMe() Me {
 
     defer r.Body.Close()
 
-    if r.StatusCode == 404 {
-        log.Fatal("Invalid token")
-
-    }
+    if r.StatusCode == 404 { log.Fatal("Invalid token") }
 
     bytes, _ := io.ReadAll(r.Body)
-    err = json.Unmarshal(bytes, &me)
-    if err != nil {
-        log.Fatal(err)
-
-    }
+    json.Unmarshal(bytes, &me)
 
     return me
 }
@@ -42,7 +35,7 @@ func (b *Bot) GetUpdates() (Update, bool) {
     var updates Updates
     var update Update
 
-    r, err := http.Get(fmt.Sprintf("%s/bot%s/getUpdates?timeout=100", baseURL, b.Token))
+    r, err := http.Get(fmt.Sprintf("%s/bot%s/getUpdates?offset=-1&timeout=100", baseURL, b.Token))
     if err != nil {
         log.Fatal(err)
 
