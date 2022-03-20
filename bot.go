@@ -64,23 +64,28 @@ func (b *Bot) GetUpdates() (Update, bool) {
     update = updates.Update[len(updates.Update) - 1]
 
     var previous Previous
-    file, err := os.Create("config.json")
+    file, err := os.OpenFile("./config.json", os.O_APPEND | os.O_CREATE, 0644)
     if err != nil {
         log.Fatal("Failed to open config.json")
 
     }
-    
-    bytes, _ = io.ReadAll(file)
+
+    defer file.Close()
+   
+    bytes, _ = ioutil.ReadAll(file)
     json.Unmarshal(bytes, &previous)
 
-    if previous.Previous != update.ID && string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
-        update.Command = strings.Split(update.Message.Text, " ")[0][1:]
-        update.Args = strings.Split(update.Message.Text, " ")[1:]
+    if previous.Previous != update.ID {
         previous.Previous = update.ID
-        jsonFile, _ := json.Marshal(previous)
-        ioutil.WriteFile("config.json", jsonFile, 0644)
+        
+        if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
+            update.Command = strings.Split(update.Message.Text, " ")[0][1:]
+            update.Args = strings.Split(update.Message.Text, " ")[1:]
+            jsonFile, _ := json.Marshal(previous)
+            ioutil.WriteFile("config.json", jsonFile, 0644)
 
-        return update, true
+            return update, true
+        }
     }
     
     return update, false
