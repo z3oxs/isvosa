@@ -38,6 +38,7 @@ func (b *Bot) GetMe() Me {
 }
 
 func (b *Bot) GetUpdates() (Update, bool) {
+    var previous Previous
     var updates Updates
     var update Update
 
@@ -46,33 +47,23 @@ func (b *Bot) GetUpdates() (Update, bool) {
         log.Fatal(err)
 
     }
-
-    defer r.Body.Close()
     
-    if r.StatusCode == 404 {
-        log.Fatal("Invalid token")
-
-    }
-
-    bytes, _ := io.ReadAll(r.Body)
-    err = json.Unmarshal(bytes, &updates)
-    if err != nil {
-        log.Fatal(err)
-
-    }
-
-    update = updates.Update[len(updates.Update) - 1]
-
-    var previous Previous
-    file, err := os.OpenFile("./config.json", os.O_APPEND | os.O_CREATE, 0644)
+    if r.StatusCode == 404 { log.Fatal("Invalid token") }
+    
+    file, err := os.OpenFile("config.json", os.O_APPEND | os.O_CREATE, 0644)
     if err != nil {
         log.Fatal("Failed to open config.json")
 
     }
 
     defer file.Close()
+    defer r.Body.Close()
+
+    bytes, _ := io.ReadAll(r.Body)
+    json.Unmarshal(bytes, &updates)
+    update = updates.Update[len(updates.Update) - 1]
    
-    bytes, _ = ioutil.ReadAll(file)
+    bytes, _ = io.ReadAll(file)
     json.Unmarshal(bytes, &previous)
 
     if previous.Previous != update.ID {
@@ -81,8 +72,8 @@ func (b *Bot) GetUpdates() (Update, bool) {
         if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
             update.Command = strings.Split(update.Message.Text, " ")[0][1:]
             update.Args = strings.Split(update.Message.Text, " ")[1:]
-            jsonFile, _ := json.Marshal(previous)
-            ioutil.WriteFile("config.json", jsonFile, 0644)
+            newFile, _ := json.Marshal(previous)
+            ioutil.WriteFile("config.json", newFile, 0644)
 
             return update, true
         }

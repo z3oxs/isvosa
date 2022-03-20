@@ -1,11 +1,7 @@
 package isvosa
 
-import "sync"
-
 var (
     baseURL string = "https://api.telegram.org"
-    previousUpdate Update 
-    wg sync.WaitGroup
 )
 
 type Bot struct {
