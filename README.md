@@ -16,10 +16,9 @@ go get -u github.com/z3oxs/isvosa
 ```
 
 <br><br>
-## ♻️ Changelog v0.1.3
-- Fixed new updates handler
-- Simplified all commands to a unique function 'Send', needing only pass a valid struct
-- Some lil fixes and improvements
+## ♻️ Changelog v0.1.4
+- Added send, edit and delete messages binding
+- Separated some functions in files per use
 
 <br><br>
 ## 📃 Documentation
@@ -57,6 +56,10 @@ func main() {
             // Handling all valid commands entries (Contains '/' on first character)
             switch update.Command {
                 // Will send a simple message
+                case "test":
+                    bot.SendMessage(update.Message.Chat.ID, "test message")
+
+                // Will send a message possibly with more parameters, more: https://core.telegram.org/bots/api#sendmessage
                 case "ping":
                     bot.Send(isvosa.SendMessage {
                         ChatID: update.Message.Chat.ID,
@@ -99,12 +102,6 @@ func me(bot isvosa.Bot) {
 ### Sending messages and other medias
 Basic about sending message and media with your bot
 ```go
-// To send complete messages, with complementar methods, more: https://core.telegram.org/bots/api#sendmessage
-bot.Send(isvosa.SendMessage {
-    ChatID: update.Message.Chat.ID,
-    Text: "Text",
-})
-
 // To send photos, more: https://core.telegram.org/bots/api#sendphoto
 bot.Send(isvosa.SendPhoto {
     ChatID: update.Message.Chat.ID,
@@ -155,7 +152,10 @@ bot.Send(isvosa.SendMessage {
 ### Editting
 Editing existing messages information
 ```go
-// Will change the content of next message (based on your input)
+// Simple message edit
+bot.EditMessage(update.Message.Chat.ID, update.Message.ID, "New content!")
+
+// Can send a completely change to the content of messages (based on your input), more: https://core.telegram.org/bots/api#editmessagetext
 bot.Send(isvosa.EditMessageText {
     ChatID: update.Message.Chat.ID,
     MessageID: update.Message.ID,
@@ -188,7 +188,10 @@ bot.Send(isvosa.StopPoll {
     MessageID: update.Message.ID,
 })
 
-// Will delete a message
+// Will simple delete a message
+bot.Delete(update.Message.Chat.ID, update.Message.ID)
+
+// Will delete a message with more parameters, more: https://core.telegram.org/bots/api#deletemessage
 bot.Send(isvosa.DeleteMessage {
     ChatID: update.Message.Chat.ID,
     MessageID: update.Message.ID,

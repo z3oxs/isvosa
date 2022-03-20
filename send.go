@@ -31,3 +31,15 @@ func (b *Bot) Send(method interface{}) {
         log.Printf("%s [%d]", requestError.Description, requestError.ErrorCode)
     }
 }
+
+func (b *Bot) SendMessage(chatID int, text string) {
+    b.Send(SendMessage { ChatID: chatID, Text: text})
+}
+
+func (b *Bot) EditMessage(chatID, messageID int, text string) {
+    b.Send(EditMessageText { ChatID: chatID, MessageID: messageID, Text: text })
+}
+
+func (b *Bot) Delete(chatID, messageID int) {
+    b.Send(DeleteMessage { ChatID: chatID, MessageID: messageID })
+}
