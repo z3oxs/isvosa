@@ -98,6 +98,25 @@ bot.Send(isvosa.SendPhoto {
     ChatID: update.Message.Chat.ID,
     Photo: "A URL or a InputMedia (https://core.telegram.org/bots/api#inputmedia)",
 })
+// To send a inline keyboard, more: https://core.telegram.org/bots/api#inlinekeyboardmarkup
+bot.Send(isvosa.SendMessage {
+    ChatID: update.Message.Chat.ID,
+    Text: "Inline keyboard test",
+    ReplyMarkup: isvosa.InlineKeyboardMarkup {
+        InlineKeyboard: [][]isvosa.InlineKeyboardButton {
+            // First row, simple URL button
+            []isvosa.InlineKeyboardButton {
+                { Text: "Row 1", URL: "https://test.com" },
+            },
+            // Second row, with 2 lines (You can define any size for your inline keyboard, just
+            // add '[]isvosa.InlineKeyboardButton' to insert)
+            []isvosa.InlineKeyboardButton {
+                { Text: "Row 2", URL: "https://test.com" },
+                { Text: "Row 2 Line 2", URL: "https://test.com" }
+            },
+        },
+    },
+})
 ```
 
 #### All available formats:
