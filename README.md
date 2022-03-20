@@ -121,11 +121,7 @@ bot.Send(isvosa.SendPhoto {
 ### Editting
 Editing existing messages information
 ```go
-<<<<<<< HEAD
 // Will change previous message (based on your input) text
-=======
-// Will change previous message based on your input) text
->>>>>>> e5b5d44 (Stable)
 bot.EditMessage(update.Message.Chat.ID, update.Message.ID - 1, "New text")
 
 // Will change the content of next message (based on your input, too)
