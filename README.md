@@ -1,5 +1,9 @@
 <div align="center">
+<<<<<<< HEAD
     <img width="500" src="https://cdn-130.anonfiles.com/57N40ePcx9/14637157-1647731590/banner.png" />
+=======
+    <img width="500" src="isvosa.png" />
+>>>>>>> e5b5d44 (Stable)
     <h3>A performatic library to develop Telegram bots.</h3>
 </div>
 
@@ -121,7 +125,11 @@ bot.Send(isvosa.SendPhoto {
 ### Editting
 Editing existing messages information
 ```go
+<<<<<<< HEAD
 // Will change previous message (based on your input) text
+=======
+// Will change previous message based on your input) text
+>>>>>>> e5b5d44 (Stable)
 bot.EditMessage(update.Message.Chat.ID, update.Message.ID - 1, "New text")
 
 // Will change the content of next message (based on your input, too)
