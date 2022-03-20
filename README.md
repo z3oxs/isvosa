@@ -1,9 +1,5 @@
 <div align="center">
-<<<<<<< HEAD
-    <img width="500" src="https://cdn-130.anonfiles.com/57N40ePcx9/14637157-1647731590/banner.png" />
-=======
     <img width="500" src="isvosa.png" />
->>>>>>> e5b5d44 (Stable)
     <h3>A performatic library to develop Telegram bots.</h3>
 </div>
 
