@@ -2,25 +2,18 @@ package isvosa
 
 var (
     baseURL string = "https://api.telegram.org"
-    previousID int = 0
-    handler Handler
 )
 
 type Bot struct {
     Token string
 }
 
-type Handler struct {
-    Commands []Command
-}
-
-type Command struct {
-    Command string
-    Run func(bot *Bot, msg *Message, args []string)
-}
-
 type Updates struct {
     Update []Update `json:"result"`
+}
+
+type Previous struct {
+    ID int `json:"id"`
 }
 
 type Update struct {
