@@ -1,6 +1,6 @@
 <div align="center">
     <img width="500" src="isvosa.png" />
-    <h3>A performatic library to develop Telegram bots.</h3>
+    <h3>A simple library to fast develop Telegram bots.</h3>
     <a href="https://pkg.go.dev/github.com/z3oxs/isvosa">
         <img src="https://pkg.go.dev/badge/github.com/z3oxs/isvosa.svg" />
     </a>
@@ -16,14 +16,16 @@ go get -u github.com/z3oxs/isvosa
 ```
 
 <br><br>
-## ♻️ Changelog v0.1.4
-- Added send, edit and delete messages binding
-- Separated some functions in files per use
+## ♻️ Changelog v0.1.5
+- Added simple and modular handler, click [here](#modular-handler) to see more
+- Added a nonstop polling function named "Start"
+- Removed necessity of config.json hold previous update ID, now will be handle by memory
 
 <br><br>
 ## 📃 Documentation
 <a id="summary" /><br>
 - [Getting started](#getting-started)
+- [Modular handler](#modular-handler)
 - [Bot information](#bot-information)
 - [Sending messages and other medias](#sending)
 - [Editting](#editting)
@@ -45,38 +47,95 @@ func main() {
         Token: "YOUR TOKEN HERE"
     }
     
-    // Simple updates handler to get information
-    for {
-        // 'Update' var will receive all updates information and 'newUpdate' will receive a boolean confirming if
-        // the new update is really a new update
-        update, newUpdate := bot.GetUpdates()
-        
-        // Checking if is a trully new update
-        if newUpdate {
-            // Handling all valid commands entries (Contains '/' on first character)
-            switch update.Command {
-                // Will send a simple message
-                case "test":
-                    bot.SendMessage(update.Message.Chat.ID, "test message")
+    // Is required 2 parameters, the first is the command, if anyone send "/ping" to the bot, will be handled
+    // based on the second parameter, the function, requiring 3 parameters, can be with any name, but is
+    // required to be 3 and with types "*isvosa.Bot", "*isvosa.Message" and "[]string", respectively
+    bot.Add("ping", func(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+        bot.SendMessage(msg.Chat.ID, "pong!")
+    })
+    
+    // Will nonstop polling, automatic handling all commands and messages received
+    bot.Start()
+}
+```
 
-                // Will send a message possibly with more parameters, more: https://core.telegram.org/bots/api#sendmessage
-                case "ping":
-                    bot.Send(isvosa.SendMessage {
-                        ChatID: update.Message.Chat.ID,
-                        Text: "test",
-                    })
+<br><br>
+<a id="modular-handler" />
+[Back to summary](#summary)
+### Modular handler
+Handling commands with functions outside main.go **All command files need to be of the same package and in the same directory**
 
-                // Sending a message replying will first element of the arguments, that is parsed automatically
-                // for all valid commands
-                case "echo":
-                    bot.Send(isvosa.SendMessage {
-                        ChatID: update.Message.Chat.ID,
-                        Text: update.Args[0],
-                    })
-        }
+main.go:
+```go
+package main
+
+import (
+    // A module with any name you choose, i'll call "commands"
+    "example/commands"
+    "github.com/z3oxs/isvosa"
+)
+
+func main() {
+    // Initialize the variable with a Bot Type
+    bot := isvosa.Bot {
+        Token: "YOUR TOKEN HERE" 
+    }
+
+    // Create a exportable function from your module, you can choose any name for the method, but
+    // is **required**, without a function to call the module, the commands will not be exported
+    commands.Setup()
+
+    // Nonstop polling to automatic get new and handle updates
+    bot.Start()
+}
+```
+
+<br><br>
+commands/commands.go: (a file inside another path inside the project)
+```go
+package commands
+
+import (
+    "fmt"
+    "github.com/z3oxs/isvosa"
+)
+
+// Can be empty or doing any stuff, we will list all available commands, only needing to be defined
+func Setup() {
+    for _, f := range isvosa.Command() {
+        fmt.Printf("Loaded %v\n", f.Command)
     }
 }
 ```
+
+<br><br>
+commands/ping.go: (a available command that will reply with "pong")
+```go
+package commands
+
+import "github.com/z3oxs/isvosa"
+
+// This function will run in the same moment that any command from the package was been summoned,
+// we will use to add the command to the handler
+func init() {
+    isvosa.Add(isvosa.Command {
+        // If "/ping" was been sended to bot, he will handle the request as a valid command
+        Command: "ping",
+        // You can pass a anonymous function or a existing function, only requiring receive
+        // 3 parameters, bot as *isvosa.Bot, msg as *isvosa.Message and args as []string, the 
+        // parameter name can be anyone, only requiring 3 parameters with these 3 types, 
+        // respectively
+        Run: ping,
+    })
+}
+
+// If you choose creating a non-anonymous function, that is the format you need to use to
+// handle valid commands
+func ping(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+    bot.SendMessage(msg.Chat.ID, "pong!")
+}
+```
+
 <br><br>
 <a id="bot-information" />
 [Back to summary](#summary)
@@ -96,6 +155,7 @@ func me(bot isvosa.Bot) {
     // More information: https://core.telegram.org/bots/api#user
 }
 ```
+
 <br><br>
 <a id="sending" />
 [Back to summary](#summary)
