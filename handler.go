@@ -5,10 +5,7 @@ func Add(command Command) {
 }
 
 func (b *Bot) Add(command string, run func(bot *Bot, msg *Message, args []string)) {
-    handler.Commands = append(handler.Commands, Command {
-        Command: command,
-        Run: run,
-    })
+    handler.Commands = append(handler.Commands, Command { Command: command, Run: run })
 }
 
 func Commands() []Command {

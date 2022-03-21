@@ -11,19 +11,20 @@ import (
 )
 
 func (b *Bot) Start() {
+    var updates Updates
+    var update Update
+    
     for {
-        var updates Updates
-        var update Update
-
         r, err := http.Get(fmt.Sprintf("%s/bot%s/getUpdates?offset=-1&timeout=100", baseURL, b.Token))
         if err != nil {
             log.Fatal(err)
 
+        } else if r.StatusCode != 200 {
+            log.Fatal("Invalid token")
+
         }
         
         defer r.Body.Close()
-        
-        if r.StatusCode == 404 { log.Fatal("Invalid token") }
 
         bytes, _ := io.ReadAll(r.Body)
         json.Unmarshal(bytes, &updates)
@@ -37,18 +38,14 @@ func (b *Bot) Start() {
         } else if previousID != update.ID {
             previousID = update.ID
             
-            if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
-                update.Command = strings.Split(update.Message.Text, " ")[0][1:]
-                update.Args = strings.Split(update.Message.Text, " ")[1:]
+            if update.Message.Text != "" && string(update.Message.Text[0]) == "/" {
+                rawText := strings.Split(update.Message.Text, " ")
+                update.Command = rawText[0][1:]
+                update.Args = rawText[1:]
 
-                if len(update.Args) == 0 {
-                    update.Args = []string{""}
-
-                }
-
-                for _, f := range handler.Commands {
-                    if update.Command == f.Command {
-                        f.Run(b, &update.Message, update.Args)
+                for _, c := range handler.Commands {
+                    if update.Command == c.Command {
+                        c.Run(b, &update.Message, update.Args)
 
                     }
                 }
