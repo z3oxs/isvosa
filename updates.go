@@ -8,51 +8,51 @@ import (
     "io"
     "log"
     "strings"
-    "os"
-    "io/ioutil"
 )
 
-func (b *Bot) GetUpdates() (Update, bool) {
-    var previous Previous
-    var updates Updates
-    var update Update
+func (b *Bot) Start() {
+    for {
+        var updates Updates
+        var update Update
 
-    r, err := http.Get(fmt.Sprintf("%s/bot%s/getUpdates?offset=-1&timeout=100", baseURL, b.Token))
-    if err != nil {
-        log.Fatal(err)
+        r, err := http.Get(fmt.Sprintf("%s/bot%s/getUpdates?offset=-1&timeout=100", baseURL, b.Token))
+        if err != nil {
+            log.Fatal(err)
 
-    }
-    
-    if r.StatusCode == 404 { log.Fatal("Invalid token") }
-    
-    file, err := os.OpenFile("config.json", os.O_APPEND | os.O_CREATE, 0644)
-    if err != nil {
-        log.Fatal("Failed to open config.json")
-
-    }
-
-    defer file.Close()
-    defer r.Body.Close()
-
-    bytes, _ := io.ReadAll(r.Body)
-    json.Unmarshal(bytes, &updates)
-    update = updates.Update[len(updates.Update) - 1]
-   
-    bytes, _ = io.ReadAll(file)
-    json.Unmarshal(bytes, &previous)
-
-    if previous.ID != update.ID {
-        previous.ID = update.ID
+        }
         
-        if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
-            update.Command = strings.Split(update.Message.Text, " ")[0][1:]
-            update.Args = strings.Split(update.Message.Text, " ")[1:]
-            bytes, _ := json.Marshal(previous)
-            ioutil.WriteFile("config.json", bytes, 0644)
+        defer r.Body.Close()
+        
+        if r.StatusCode == 404 { log.Fatal("Invalid token") }
 
-            return update, true
+        bytes, _ := io.ReadAll(r.Body)
+        json.Unmarshal(bytes, &updates)
+        update = updates.Update[len(updates.Update) - 1]
+        
+        if previousID == 0 {
+            previousID = update.ID
+        
+            continue
+
+        } else if previousID != update.ID {
+            previousID = update.ID
+            
+            if string(update.Message.Text) != "" && string(update.Message.Text[0]) == "/" {
+                update.Command = strings.Split(update.Message.Text, " ")[0][1:]
+                update.Args = strings.Split(update.Message.Text, " ")[1:]
+
+                if len(update.Args) == 0 {
+                    update.Args = []string{""}
+
+                }
+
+                for _, f := range handler.Commands {
+                    if update.Command == f.Command {
+                        f.Run(b, &update.Message, update.Args)
+
+                    }
+                }
+            }
         }
     }
-    
-    return update, false
 }
