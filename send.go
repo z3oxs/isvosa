@@ -10,6 +10,8 @@ import (
     "bytes"
 )
 
+// Receive any struct but handling only valid send statement, treating all and
+// sending a command to the bot
 func (b *Bot) Send(method interface{}) {
     endpoint := strings.Split(fmt.Sprintf("%T", method), ".")[1]
     url := fmt.Sprintf("%s/bot%s/%s", baseURL, b.Token, endpoint)
@@ -32,14 +34,17 @@ func (b *Bot) Send(method interface{}) {
     }
 }
 
+// Fast bind to send a simple message
 func (b *Bot) SendMessage(chatID int, text string) {
     b.Send(SendMessage { ChatID: chatID, Text: text})
 }
 
+// Fast bind to edit a message
 func (b *Bot) EditMessage(chatID, messageID int, text string) {
     b.Send(EditMessageText { ChatID: chatID, MessageID: messageID, Text: text })
 }
 
+// Fast bind to delete a message
 func (b *Bot) Delete(chatID, messageID int) {
     b.Send(DeleteMessage { ChatID: chatID, MessageID: messageID })
 }

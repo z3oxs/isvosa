@@ -8,6 +8,7 @@ import (
     "io"
 )
 
+// Get all bot informations when the token is valid
 func (b *Bot) GetMe() Me {
     var me Me
     r, err := http.Get(fmt.Sprintf("%s/bot%s/getMe", baseURL, b.Token))
