@@ -1,4 +1,4 @@
-// A simple and performatic Telegram Bot API
+// A performatic Telegram API to build bots
 package isvosa
 
 import (
@@ -10,9 +10,6 @@ import (
     "strings"
 )
 
-// Will handling all the updates, being the main pillar of the package doingl
-// a nonstop polling based on a for loop and getting all the new updates and
-// testing if is really a new update
 func (b *Bot) Start() {
     for {
         var updates Updates

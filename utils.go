@@ -1,14 +1,11 @@
 package isvosa
 
-// Base variables
 var (
     baseURL string = "https://api.telegram.org"
     previousID int = 0
     handler Handler
 )
 
-// All structs below is used for valid handling all API returns and
-// all API commands
 type Bot struct {
     Token string
 }
