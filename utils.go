@@ -17,6 +17,7 @@ type Handler struct {
 type Command struct {
     Command string
     Run func(bot *Bot, msg *Message, args []string)
+    Description string
 }
 
 type Updates struct {
@@ -861,4 +862,46 @@ type InputMedia struct {
     Performer string `json:"performer,omitempty"`
     Title string `json:"title,omitempty"`
     DisableContentTypeDetection bool `json:"disable_content_tyoe_detection,omitempty"`
+}
+
+type GetUserProfilePhotos struct {
+    UserID int `json:"user_id"`
+    Offset int `json:"offset,omitempty"`
+    Limit int `json:"limit,omitempty"`
+}
+
+type UserProfilePhotos struct {
+    Result struct {
+        TotalCount int `json:"total_count"`
+        Photos [][]PhotoSize `json:"photos"`
+    } `json:"result"`
+}
+
+type GetChat struct {
+    ChatID int `json:"chat_id"`
+}
+
+type GetChatResult struct {
+    Chat Chat `json:"result"`
+}
+
+type GetChatAdministratorsResult struct {
+    Admins []ChatMemberAdministrator `json:"result"`
+}
+
+type GetChatMemberCount struct {
+    Count int `json:"result"`
+}
+
+type BotCommand struct {
+    Command string `json:"command"`
+    Description string `json:"description"`
+}
+
+type BotCommandsScope struct {
+    Type string `json:"type"`
+}
+
+type GetMyCommandsResult struct {
+    Commands []BotCommand `json:"result"`
 }

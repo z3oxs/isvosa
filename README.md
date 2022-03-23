@@ -16,10 +16,15 @@ go get -u github.com/z3oxs/isvosa
 ```
 
 <br><br>
-## ♻️ Changelog v0.1.5
-- Added simple and modular handler, click [here](#modular-handler) to see more
-- Added a nonstop polling function named "Start"
-- Removed necessity of config.json hold previous update ID, now will be handle by memory
+## ♻️ Changelog v0.1.6
+- Some files recoded
+- Added description to handler commands (optional)
+- Added some get functions [more](#get)
+    - getUserProfilePhotos
+    - getChat
+    - getChatAdministrators
+    - getChatMemberCount
+    - getMyCommands
 
 <br><br>
 ## 📃 Documentation
@@ -29,6 +34,7 @@ go get -u github.com/z3oxs/isvosa
 - [Bot information](#bot-information)
 - [Sending messages and other medias](#sending)
 - [Editting](#editting)
+- [Getting information](#get)
 - [Other actions](#other-actions)
 
 <br><br>
@@ -126,6 +132,9 @@ func init() {
         // parameter name can be anyone, only requiring 3 parameters with these 3 types, 
         // respectively
         Run: ping,
+        // The description is fully optional, doens't handled with the function, only for context
+        // purposes
+        Description: "Reply a text contening 'pong!'"
     })
 }
 
@@ -235,6 +244,30 @@ bot.Send(isvosa.EditMessageMedia {
 - isvosa.EditMessageCaption -> https://core.telegram.org/bots/api#editmessagecaption
 - isvosa.EditMessageMedia -> https://core.telegram.org/bots/api#editmessagemedia
 - isvosa.EditMessageReplyMarkup -> https://core.telegram.org/bots/api#editmessagereplymarkup
+
+<br><br>
+<a id="get" />
+[Back to summary](#summary)
+### Getting information
+Functions to get usual information, or not, i don't know :/
+```go
+// Will fetch all parsed user ID profile photos
+photos := bot.GetUserProfilePhotos(isvosa.GetUserProfilePhotos {
+    UserID: <Some ID here>
+})
+
+// Will fetch information from the parsed chat
+chat := bot.GetChat(<Chat ID>)
+
+// Will fetch a array of all admins belong to parsed chat
+admins := bot.GetChatAdministrators(<Chat ID>)
+
+// Will return a integer that is all member count of parsed chat
+count := bot.GetChatMemberCount(<Chat ID>)
+
+// Will return a array of valid commands set by BotFather
+commands := bot.GetMyCommands("scope") // Available scopes: https://core.telegram.org/bots/api#botcommandscope
+```
 
 <br><br>
 <a id="other-actions" />
