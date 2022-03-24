@@ -905,3 +905,113 @@ type BotCommandsScope struct {
 type GetMyCommandsResult struct {
     Commands []BotCommand `json:"result"`
 }
+
+type BanChatMember struct {
+    ChatID int `json:"chat_id"`
+    UserID int `json:"user_id"`
+    UntilDate int `json:"until_date,omitempty"`
+    RevokeMessages bool `json:"revoke_messages,omitempty"`
+}
+
+type UnbanChatMember struct {
+    ChatID int `json:"chat_id"`
+    UserID int `json:"user_id"`
+    OnlyIfBanned bool `json:"only_if_banned,omitempty"`
+}
+
+type RestrictChatMember struct {
+    ChatID int `json:"chat_id"`
+    UserID int `json:"user_id"`
+    Permissions ChatPermissions `json:"permissions"`
+    UntilDate int `json:"until_date,omitempty"`
+}
+
+type PromoteChatMember struct {
+    ChatID int `json:"chat_id"`
+    UserID int `json:"user_id"`
+    IsAnonymous bool `json:"is_anonymous"`
+    CanManageChat bool `json:"can_manage_chat"`
+    CanDeleteMessages bool `json:"can_delete_messages"`
+    CanManageVoiceChats bool `json:"can_manage_voice_chats"`
+    CanRestrictMembers bool `json:"can_restrict_members"`
+    CanPromoteMembers bool `json:"can_promote_members"`
+    CanChangeInfo bool `json:"can_change_info"`
+    CanInviteUsers bool `json:"can_invite_users"`
+    CanPostMessages bool `json:"can_post_messages,omitempty"`
+    CanEditMessages bool `json:"can_edit_messages,omitempty"`
+    CanPinMessages bool `json:"can_pin_messages,omitempty"`
+}
+
+type SetChatAdministratorCustomTitle struct {
+    ChatID int `json:"chat_id"`
+    UserID int `json:"user_id"`
+    CustomTitle string `json:"custom_title"`
+}
+
+type BanChatSenderChat struct {
+    ChatID int `json:"chat_id"`
+    SenderChatID int `json:"sender_chat_id"`
+}
+
+type UnbanChatSenderChat struct {
+    ChatID int `json:"chat_id"`
+    SenderChatID int `json:"sender_chat_id"`
+}
+
+type SetChatPermissions struct {
+    ChatID int `json:"chat_id"`
+    Permissions ChatPermissions `json:"permissions"`
+}
+
+type DeleteChatPhoto struct {
+    ChatID int `json:"chat_id"`
+}
+
+type SetChatTitle struct {
+    ChatID int `json:"chat_id"`
+    Title string `json:"title"`
+}
+
+type SetChatDescription struct {
+    ChatID int `json:"chat_id"`
+    Description string `json:"description,omitempty"`
+}
+
+type PinChatMessage struct {
+    ChatID int `json:"chat_id"`
+    MessageID int `json:"message_id"`
+    DisableNotification bool `json:"disable_notification,omitempty"`
+}
+
+type UnpinChatMessage struct {
+    ChatID int `json:"chat_id"`
+    MessageID int `json:"message_id"`
+}
+
+type UnpinAllChatMessages struct {
+    ChatID int `json:"chat_id"`
+}
+
+type SetChatStickerSet struct {
+    ChatID int `json:"chat_id"`
+    StickerSetName string `json:"sticker_set_name"`
+}
+
+type DeleteChatStickerSet struct {
+    ChatID int `json:"chat_id"`
+}
+
+type SetMyCommands struct {
+    Commands []BotCommand `json:"commands"`
+    Scope BotCommandsScope `json:"scope,omitempty"`
+    LanguageCode string `json:"language_code,omitempty"`
+}
+
+type DeleteMyCommands struct {
+    Scope BotCommandsScope `json:"scope,omitempty"`
+    LanguageCode string `json:"language_code,omitempty"`
+}
+
+type LeaveChat struct {
+    ChatID int `json:"chat_id"`
+}

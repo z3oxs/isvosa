@@ -38,7 +38,7 @@ func (b *Bot) Start() {
         } else if previousID != update.ID {
             previousID = update.ID
             
-            if update.Message.Text != "" && string(update.Message.Text[0]) == "/" {
+            if update.Message.Text != "" && string(update.Message.Text[0]) == "/" && !update.Message.From.IsBot {
                 rawText := strings.Split(update.Message.Text, " ")
                 update.Command = rawText[0][1:]
                 update.Args = rawText[1:]

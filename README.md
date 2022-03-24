@@ -16,15 +16,32 @@ go get -u github.com/z3oxs/isvosa
 ```
 
 <br><br>
-## ♻️ Changelog v0.1.6
-- Some files recoded
-- Added description to handler commands (optional)
-- Added some get functions [more](#get)
-    - getUserProfilePhotos
-    - getChat
-    - getChatAdministrators
-    - getChatMemberCount
-    - getMyCommands
+## ♻️ Changelog v0.1.7
+**For some reason golang cache all the updates, on commands like ban, unban you need
+to send another message to overwrite the last update, or the commands will be looped.
+Only affecting commands that send a notification of some modification on settings or
+member restriction**
+
+- Moderation binds [more](#mod)
+    - banChatMember
+    - unbanChatMember
+    - restrictChatMember
+    - promoteChatMember
+    - setChatAdministratorCustomTitle
+    - banChatSenderChat
+    - unbanChatSenderChat
+    - setChatPermissions
+    - deleteChatPhoto
+    - setChatTitle
+    - setChatDescription
+    - pinChatMessage
+    - unpinChatMessage
+    - unpinAllChatMessages
+    - setChatStickerSet
+    - deleteChatStickerSet
+    - setMyCommands
+    - deleteMyCommands
+    - leaveChat
 
 <br><br>
 ## 📃 Documentation
@@ -33,6 +50,7 @@ go get -u github.com/z3oxs/isvosa
 - [Modular handler](#modular-handler)
 - [Bot information](#bot-information)
 - [Sending messages and other medias](#sending)
+- [Moderation](#mod)
 - [Editting](#editting)
 - [Getting information](#get)
 - [Other actions](#other-actions)
@@ -214,6 +232,98 @@ bot.Send(isvosa.SendMessage {
 - isvosa.SendPoll -> https://core.telegram.org/bots/api#sendpoll
 - isvosa.SendDice -> https://core.telegram.org/bots/api#senddice
 - isvosa.SendChatAction -> https://core.telegram.org/bots/api#sendchataction
+
+<br><br>
+<a id="mod" />
+[Back to summary](#mod)
+### Moderation
+Moderation binds for take control of your chat
+```go
+// A function to ensure if the command sender is an admin
+func ensureAdmin(bot *isvosa.Bot, msg *isvosa.Message, adminID int) bool {
+    // Getting a array returning all admins
+    admins := bot.GetChatAdministrators(msg.Chat.ID)
+    
+    // Checking if the user that sended the command is admin
+    for _, i := range admins {
+        if msg.From.ID == adminID {
+            return true
+
+        }
+    }
+
+    return false
+}
+
+// A simple "ban" command
+bot.Add("ban", func(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+    admin := ensureAdmin(bot, msg, msg.From.ID)
+
+    if admin {
+        // You have 3 methods to send a valid ID to ban, replying to user message, parsing his ID or
+        // logging all messages on a database with all user information (after had sended a message)
+        // and searching for an ID on database
+        bot.Ban(msg.Chat.ID, msg.ReplyToMessage.From.ID)
+
+    }
+}
+
+// A simple "unban" command
+bot.Add("ban", func(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+    admin := ensureAdmin(msg.From.ID)
+
+    if admin {
+        bot.Unban(msg.Chat.ID, msg.ReplyToMessage.From.ID)
+
+    }
+}
+
+// A detailed "ban" command, all moderation structs are sended using "bot.Send"
+bot.Add("ban", func(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+    admin := ensureAdmin(msg.From.ID)
+    
+    if admin {
+        // Parsing a struct using "Send" method
+        bot.Send(isvosa.BanChatMember {
+            ChatID: msg.Chat.ID,
+            UserID: msg.ReplyToMessage.From.ID,
+        })
+    }
+})
+
+// A detailed "unban" command
+bot.Add("unban", func(bot *isvosa.Bot, msg *isvosa.Message, args []string) {
+    admin := ensureAdmin(msg.From.ID)
+    
+    if admin {
+        bot.Send(isvosa.UnbanChatMember {
+            ChatID: msg.Chat.ID,
+            UserID: msg.ReplyToMessage.From.ID,
+        })
+    }
+})
+```
+
+#### All available actions:
+- isvosa.BanChatMember -> https://core.telegram.org/bots/api#banchatmember
+- isvosa.UnbanChatMember -> https://core.telegram.org/bots/api#unbanchatmember
+- isvosa.RestrictChatMember -> https://core.telegram.org/bots/api#restrictchatmember
+- isvosa.PromoteChatMember -> https://core.telegram.org/bots/api#promotechatmember
+- isvosa.SetChatAdministratorCustomTitle -> https://core.telegram.org/bots/api#setchatadministratorcustomtitle
+- isvosa.BanChatSenderChat -> https://core.telegram.org/bots/api#banchatsenderchat
+- isvosa.UnbanChatSenderChat -> https://core.telegram.org/bots/api#unbanchatsenderchat
+- isvosa.SetChatPermissions -> https://core.telegram.org/bots/api#setchatpermissions
+- isvosa.DeleteChatPhoto -> https://core.telegram.org/bots/api#deletechatphoto
+- isvosa.SetChatTitle -> https://core.telegram.org/bots/api#setchattitle
+- isvosa.SetChatDescription -> https://core.telegram.org/bots/api#setchatdescription
+- isvosa.PinChatMessage -> https://core.telegram.org/bots/api#pinchatmessage
+- isvosa.UnpinChatMessage -> https://core.telegram.org/bots/api#unpinchatmessage
+- isvosa.UnpinAllChatMessages -> https://core.telegram.org/bots/api#unpinallchatmessages
+- isvosa.SetChatStickerSet -> https://core.telegram.org/bots/api#setchatstickerset
+- isvosa.DeleteChatStickerSet -> https://core.telegram.org/bots/api#deletechatstickerset
+- isvosa.SetMyCommands -> https://core.telegram.org/bots/api#setmycommands
+- isvosa.DeleteMyCommands -> https://core.telegram.org/bots/api#deletemycommands
+- isvosa.LeaveChat -> https://core.telegram.org/bots/api#leavechat
 
 <br><br>
 <a id="editting" />
