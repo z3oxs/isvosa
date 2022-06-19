@@ -15,34 +15,6 @@ go get -u github.com/z3oxs/telego
 ```
 
 <br><br>
-## ♻️ Changelog v0.1.7
-**For some reason golang cache all the updates, on commands like ban, unban you need
-to send another message to overwrite the last update, or the commands will be looped.
-Only affecting commands that send a notification of some modification on settings or
-member restriction**
-
-- Moderation binds [more](#mod)
-    - banChatMember
-    - unbanChatMember
-    - restrictChatMember
-    - promoteChatMember
-    - setChatAdministratorCustomTitle
-    - banChatSenderChat
-    - unbanChatSenderChat
-    - setChatPermissions
-    - deleteChatPhoto
-    - setChatTitle
-    - setChatDescription
-    - pinChatMessage
-    - unpinChatMessage
-    - unpinAllChatMessages
-    - setChatStickerSet
-    - deleteChatStickerSet
-    - setMyCommands
-    - deleteMyCommands
-    - leaveChat
-
-<br><br>
 ## 📃 Documentation
 <a id="summary" /><br>
 - [Getting started](#getting-started)
