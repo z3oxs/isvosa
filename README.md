@@ -1,18 +1,17 @@
 <div align="center">
-    <img width="500" src="isvosa.png" />
     <h3>A simple library to fast develop Telegram bots.</h3>
-    <a href="https://pkg.go.dev/github.com/z3oxs/isvosa">
-        <img src="https://pkg.go.dev/badge/github.com/z3oxs/isvosa.svg" />
+    <a href="https://pkg.go.dev/github.com/z3oxs/telego">
+        <img src="https://pkg.go.dev/badge/github.com/z3oxs/telego.svg" />
     </a>
-    <a href="https://www.codefactor.io/repository/github/z3oxs/isvosa">
-        <img src="https://www.codefactor.io/repository/github/z3oxs/isvosa/badge" alt="CodeFactor" />
+    <a href="https://www.codefactor.io/repository/github/z3oxs/telego">
+        <img src="https://www.codefactor.io/repository/github/z3oxs/telego/badge" alt="CodeFactor" />
     </a>
 </div>
 
 <br><br>
 ## Install
 ```go
-go get -u github.com/z3oxs/isvosa
+go get -u github.com/z3oxs/telego
 ```
 
 <br><br>
